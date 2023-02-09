@@ -46,7 +46,7 @@ public class SysUserController {
 
 
     /**
-     * 注册
+     * 登录
      *
      * @param sysUserDTO
      * @return
