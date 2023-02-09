@@ -45,16 +45,44 @@ public class SysUserController {
     }
 
 
+    /**
+     * 注册
+     *
+     * @param sysUserDTO
+     * @return
+     */
     @PostMapping("/login")
     public R login(@RequestBody SysUserDTO sysUserDTO) {
         String username = sysUserDTO.getUsername();
         String password = sysUserDTO.getPassword();
-
         if (StrUtil.isEmpty(username) || StrUtil.isEmpty(password)) {
             return R.error(Constants.CODE_400, "参数错误");
         }
         SysUserDTO userDTO = sysUserService.login(sysUserDTO);
         return R.success(userDTO);
+    }
+
+
+    /**
+     * 注册
+     *
+     * @param sysUserDTO
+     * @return
+     */
+    @PostMapping("/register")
+    public R register(@RequestBody SysUserDTO sysUserDTO) {
+        String username = sysUserDTO.getUsername();
+        String password = sysUserDTO.getPassword();
+        String nickname = sysUserDTO.getNickname();
+        String email = sysUserDTO.getEmail();
+        String phone = sysUserDTO.getPhone();
+        String address = sysUserDTO.getAddress();
+        if (StrUtil.isEmpty(username) || StrUtil.isEmpty(password) ||
+                StrUtil.isEmpty(nickname) || StrUtil.isEmpty(email) ||
+                StrUtil.isEmpty(phone) || StrUtil.isEmpty(address)) {
+            return R.error(Constants.CODE_400, "表单提交的信息不完整");
+        }
+        return R.success(sysUserService.register(sysUserDTO));
     }
 
     /**

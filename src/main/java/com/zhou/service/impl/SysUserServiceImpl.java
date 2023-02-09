@@ -25,26 +25,63 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
     @Override
     public SysUserDTO login(SysUserDTO sysUserDTO) {
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", sysUserDTO.getUsername());
-        queryWrapper.eq("password", sysUserDTO.getPassword());
-
-        SysUser one;
-        try {
-            one = sysUserMapper.selectOne(queryWrapper);
-        } catch (Exception e) {
-            log.error("系统错误");
-            throw new SysUserException(Constants.CODE_500, "系统错误");
-        }
-
+        SysUser one = getSysUserInfoUP(sysUserDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, sysUserDTO, true);
             return sysUserDTO;
         } else {
-            log.error("用户名或者密码错误");
-            throw new SysUserException(Constants.CODE_600, "用户名或者密码错误");
+            throw new SysUserException(Constants.CODE_600, "用户名或密码错误");
         }
+
+    }
+
+    @Override
+    public boolean register(SysUserDTO sysUserDTO) {
+        SysUser one = getSysUserInfoU(sysUserDTO);
+        if (one == null) {
+            one = new SysUser();
+            BeanUtil.copyProperties(sysUserDTO, one, true);
+            int result = sysUserMapper.insert(one);
+            if (result == 1) {
+                return true;
+            }
+        } else {
+            throw new SysUserException(Constants.CODE_600, "用户已存在");
+        }
+        return false;
+    }
+
+    /**
+     * 查询用户名和密码
+     *
+     * @param sysUserDTO
+     * @return
+     */
+    private SysUser getSysUserInfoUP(SysUserDTO sysUserDTO) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", sysUserDTO.getUsername());
+        queryWrapper.eq("password", sysUserDTO.getPassword());
+        SysUser one;
+        try {
+            one = sysUserMapper.selectOne(queryWrapper);
+        } catch (Exception e) {
+            throw new SysUserException(Constants.CODE_500, "系统错误");
+        }
+        return one;
+    }
+
+    private SysUser getSysUserInfoU(SysUserDTO sysUserDTO) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", sysUserDTO.getUsername());
+        SysUser one;
+        try {
+            one = sysUserMapper.selectOne(queryWrapper);
+        } catch (Exception e) {
+            throw new SysUserException(Constants.CODE_500, "系统错误");
+        }
+        return one;
     }
 }

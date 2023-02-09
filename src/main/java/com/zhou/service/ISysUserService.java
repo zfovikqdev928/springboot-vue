@@ -14,4 +14,6 @@ import com.zhou.entity.SysUser;
  */
 public interface ISysUserService extends IService<SysUser> {
     SysUserDTO login(SysUserDTO sysUserDTO);
+
+    boolean register(SysUserDTO sysUserDTO);
 }

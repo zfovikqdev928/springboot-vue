@@ -2,7 +2,7 @@
   <div style="line-height: 60px;display: flex">
     <div style="flex: 1;">
       <span :class="collapseBtnClass" style="cursor: pointer;font-size: 18px" @click="collapse"></span>
-      <!--      页签 - 也叫面包屑-->
+      <!--      页签-也叫面包屑-->
       <el-breadcrumb separator="/" style="display: inline-block;margin-left: 10px ">
         <el-breadcrumb-item :to=" '/' ">首页</el-breadcrumb-item>
       </el-breadcrumb>
@@ -22,7 +22,7 @@
       <el-dropdown-menu slot="dropdown" style="text-align: center;width: 100px">
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">个人信息</el-dropdown-item>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-          <router-link to="/login" style="text-decoration: none">退出</router-link>
+          <span style="text-decoration: none" @click="logout">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -39,6 +39,14 @@ export default {
   data() {
     return {
       user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
+    }
+  },
+
+  methods: {
+    logout() {
+      this.$router.push("/login")
+      localStorage.removeItem("user")
+      this.$message.success("退出成功")
     }
   }
 }

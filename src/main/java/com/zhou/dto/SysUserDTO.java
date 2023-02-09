@@ -16,5 +16,7 @@ public class SysUserDTO implements Serializable {
     private String password;
     private String nickname;
     private String email;
+    private String phone;
+    private String address;
 
 }
