@@ -87,7 +87,7 @@
     </div>
     <div>
       <!--   新增弹出对话框     -->
-      <el-dialog :visible.sync="dialogFormVisible" title="用户信息" width="30%">
+      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%">
         <el-form label-width="80px" size="small" :model="form">
           <el-form-item label="用户名">
             <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
@@ -156,8 +156,8 @@ export default {
       })
           .then(res => {
             // 解析res的数据
-            this.tableData = res.records
-            this.total = res.total
+            this.tableData = res.data.records
+            this.total = res.data.total
           })
     },
     handleSizeChange(pageSize) {
@@ -189,8 +189,9 @@ export default {
     // 删除用户
     handleDel(id) {
       this.request.delete("/user/del/" + id).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("删除成功")
+          this.load()
         } else {
           this.$message.error("删除失败")
         }
@@ -201,7 +202,7 @@ export default {
     delBatch() {
       let ids = this.multipleSelection.map(v => v.id); // [{},{}] => [1,2,3...]
       this.request.post("/user/del/batch", ids).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("批量删除成功")
           this.load()
         } else {
@@ -213,7 +214,7 @@ export default {
     // 弹窗新增用户信息
     save() {
       this.request.post("/user/save", this.form).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("保存成功")
           this.dialogFormVisible = false  //关闭弹窗
           this.load()

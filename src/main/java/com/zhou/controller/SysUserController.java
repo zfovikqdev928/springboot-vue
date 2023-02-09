@@ -1,6 +1,5 @@
 package com.zhou.controller;
 
-
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
@@ -40,13 +39,13 @@ public class SysUserController {
     }
 
     @GetMapping
-    public List<SysUser> findAll() {
-        return sysUserService.list();
+    public R findAll() {
+        return R.success(sysUserService.list());
     }
 
 
     /**
-     * 注册
+     * 登录
      *
      * @param sysUserDTO
      * @return
@@ -92,8 +91,8 @@ public class SysUserController {
      * @return true or false
      */
     @DeleteMapping("/del/{id}")
-    public boolean delete(@PathVariable Integer id) {
-        return sysUserService.removeById(id);
+    public R delete(@PathVariable Integer id) {
+        return R.success(sysUserService.removeById(id));
     }
 
 
@@ -104,8 +103,8 @@ public class SysUserController {
      * @return true or false
      */
     @PostMapping("/del/batch")
-    public boolean deleteBatchByIds(@RequestBody List<Integer> ids) {
-        return sysUserService.removeByIds(ids);
+    public R deleteBatchByIds(@RequestBody List<Integer> ids) {
+        return R.success(sysUserService.removeByIds(ids));
     }
 
     /**
@@ -115,8 +114,8 @@ public class SysUserController {
      * @return 返回影响行数
      */
     @PostMapping("/save")
-    public boolean save(@RequestBody SysUser sysUser) {
-        return sysUserService.saveOrUpdate(sysUser);
+    public R save(@RequestBody SysUser sysUser) {
+        return R.success(sysUserService.saveOrUpdate(sysUser));
     }
 
 
@@ -128,7 +127,7 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/page")
-    public IPage<SysUser> findPage(@RequestParam Integer pageNum,
+    public R findPage(@RequestParam Integer pageNum,
                                    @RequestParam Integer pageSize,
                                    @RequestParam(defaultValue = "") String username,
                                    @RequestParam(defaultValue = "") String email,
@@ -145,7 +144,7 @@ public class SysUserController {
             queryWrapper.like("address", address);
         }
         queryWrapper.orderByDesc("id");
-        return sysUserService.page(page, queryWrapper);
+        return R.success(sysUserService.page(page, queryWrapper));
     }
 
 
@@ -188,12 +187,26 @@ public class SysUserController {
      * @throws IOException
      */
     @PostMapping("/import")
-    public boolean importFile(MultipartFile file) throws IOException {
+    public R importFile(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
         ExcelReader reader = ExcelUtil.getReader(inputStream);
         // 如果表头是中文，则不能实现导入
         // 导入需要去掉 id 列
         List<SysUser> list = reader.readAll(SysUser.class);
-        return sysUserService.saveBatch(list);
+        return R.success(sysUserService.saveBatch(list));
+    }
+
+
+    /**
+     * 查询一条用户信息
+     * @param username
+     * @return
+     */
+    @GetMapping("/username/{username}")
+    public R findOne(@PathVariable("username") String username) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        SysUser one = sysUserService.getOne(queryWrapper);
+        return R.success(one);
     }
 }
