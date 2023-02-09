@@ -9,7 +9,7 @@
 
 
     </div>
-    <el-dropdown style="width: 150px;cursor: pointer">
+    <el-dropdown style="width: 500px;cursor: pointer;text-align: right">
       <div style="display: inline-block">
         <img src="../assets/Tx.jpg"
              alt=""
