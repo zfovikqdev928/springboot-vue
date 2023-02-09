@@ -13,5 +13,6 @@ public interface Constants {
     String CODE_401 = "401";    //  权限不足
     String CODE_404 = "404";    // 资源请求地址错误
     String CODE_500 = "500";    // 系统错误
-    String CODE_600 = "600";    // 其他业务异常
+    String CODE_600 = "600";    // 账号不存在
+    String CODE_700 = "700";    // 密码错误
 }

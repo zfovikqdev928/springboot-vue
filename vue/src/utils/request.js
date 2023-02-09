@@ -1,4 +1,5 @@
 import axios from 'axios'
+import ElementUI from 'element-ui';
 
 const request = axios.create({
     baseURL: 'http://localhost:9090',  // 后端请求地址，全局属性
@@ -34,7 +35,15 @@ request.interceptors.response.use(
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
         }
+
+        if (res.code == '400') {
+            ElementUI.Message({
+                message: res.msg,
+                type: "error"
+            })
+        }
         return res;
+
     },
     error => {
         console.log('err' + error) // for debug

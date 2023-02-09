@@ -40,21 +40,21 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 如果 token 是空字符串
         if (StrUtil.isBlank(token)) {
-            throw new SysUserException(Constants.CODE_401, "用户无token");
+            throw new SysUserException(Constants.CODE_400, "无 Token，请您先登录！");
         }
         // 获取 token 携带的数据
         String userId;
         try {
             userId = JWT.decode(token).getAudience().get(0); //获取 userId
         } catch (JWTDecodeException e) {
-            throw new SysUserException(Constants.CODE_401, "token验证失败");
+            throw new SysUserException(Constants.CODE_401, "Token 验证失败，请您重新登录！");
 
         }
 
         // 工具 userId 查询数据库
         SysUser sysUser = sysUserService.getById(userId);
         if (sysUser == null) {
-            throw new SysUserException(Constants.CODE_401, "用户不存在，请重新登录");
+            throw new SysUserException(Constants.CODE_600, "用户不存在，请您重新登录！");
 
         }
 
@@ -64,7 +64,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new SysUserException(Constants.CODE_600, "用户验证失败");
+            throw new SysUserException(Constants.CODE_700, "密码错误，请您重新登录！");
         }
 
         return true;

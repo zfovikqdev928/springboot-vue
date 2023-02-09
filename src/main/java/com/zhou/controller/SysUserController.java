@@ -13,6 +13,7 @@ import com.zhou.common.R;
 import com.zhou.dto.SysUserDTO;
 import com.zhou.entity.SysUser;
 import com.zhou.service.impl.SysUserServiceImpl;
+import com.zhou.util.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -144,6 +145,10 @@ public class SysUserController {
             queryWrapper.like("address", address);
         }
         queryWrapper.orderByDesc("id");
+
+        SysUser userId = TokenUtils.getCurrentUser();
+        log.info("当前用户昵称为：" + userId.getNickname());
+
         return R.success(sysUserService.page(page, queryWrapper));
     }
 
@@ -154,7 +159,7 @@ public class SysUserController {
      * @param response
      */
     @GetMapping("/export")
-    public void export(HttpServletResponse response) throws IOException {
+    public R export(HttpServletResponse response) throws IOException {
         List<SysUser> list = sysUserService.list();
         // hutool 工具类创建 writer，写出到磁盘目录
         ExcelWriter writer = ExcelUtil.getWriter(true);
@@ -177,6 +182,7 @@ public class SysUserController {
         writer.flush(out, true);
         out.close();
         writer.close();
+        return R.success();
     }
 
 

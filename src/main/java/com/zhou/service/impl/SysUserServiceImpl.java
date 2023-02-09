@@ -27,6 +27,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     private SysUserMapper sysUserMapper;
 
+    /**
+     * 登录
+     * @param sysUserDTO
+     * @return
+     */
     @Override
     public SysUserDTO login(SysUserDTO sysUserDTO) {
         SysUser one = getSysUserInfoUP(sysUserDTO);
@@ -43,6 +48,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     }
 
+    /**
+     * 注册
+     * @param sysUserDTO
+     * @return
+     */
     @Override
     public boolean register(SysUserDTO sysUserDTO) {
         SysUser one = getSysUserInfoU(sysUserDTO);
@@ -78,6 +88,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return one;
     }
 
+    /**
+     * 查询用户名
+     * @param sysUserDTO
+     * @return
+     */
     private SysUser getSysUserInfoU(SysUserDTO sysUserDTO) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", sysUserDTO.getUsername());
