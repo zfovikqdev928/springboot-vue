@@ -1,7 +1,7 @@
 package com.zhou.exception;
 
 
-import com.zhou.util.R;
+import com.zhou.common.R;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

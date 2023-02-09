@@ -1,4 +1,4 @@
-package com.zhou.config;
+package com.zhou.util;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;

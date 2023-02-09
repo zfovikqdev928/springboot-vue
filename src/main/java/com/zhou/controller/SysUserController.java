@@ -8,11 +8,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhou.VueBlogApplication;
+import com.zhou.common.Constants;
+import com.zhou.common.R;
 import com.zhou.dto.SysUserDTO;
 import com.zhou.entity.SysUser;
 import com.zhou.service.impl.SysUserServiceImpl;
-import com.zhou.util.Constants;
-import com.zhou.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -128,10 +128,10 @@ public class SysUserController {
      */
     @GetMapping("/page")
     public R findPage(@RequestParam Integer pageNum,
-                                   @RequestParam Integer pageSize,
-                                   @RequestParam(defaultValue = "") String username,
-                                   @RequestParam(defaultValue = "") String email,
-                                   @RequestParam(defaultValue = "") String address) {
+                      @RequestParam Integer pageSize,
+                      @RequestParam(defaultValue = "") String username,
+                      @RequestParam(defaultValue = "") String email,
+                      @RequestParam(defaultValue = "") String address) {
         IPage<SysUser> page = new Page<>(pageNum, pageSize);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if (!"".equals(username)) {
@@ -199,6 +199,7 @@ public class SysUserController {
 
     /**
      * 查询一条用户信息
+     *
      * @param username
      * @return
      */

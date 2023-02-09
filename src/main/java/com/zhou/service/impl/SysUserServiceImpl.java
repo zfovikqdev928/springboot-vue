@@ -3,12 +3,13 @@ package com.zhou.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhou.common.Constants;
 import com.zhou.dto.SysUserDTO;
 import com.zhou.entity.SysUser;
 import com.zhou.exception.SysUserException;
 import com.zhou.mapper.SysUserMapper;
 import com.zhou.service.ISysUserService;
-import com.zhou.util.Constants;
+import com.zhou.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser one = getSysUserInfoUP(sysUserDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, sysUserDTO, true);
+
+            // 设置 token
+            String token = TokenUtils.generateToken(one.getId().toString(), one.getPassword());
+            sysUserDTO.setToken(token);
             return sysUserDTO;
         } else {
             throw new SysUserException(Constants.CODE_600, "用户名或密码错误");

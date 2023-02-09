@@ -1,4 +1,4 @@
-package com.zhou.util;
+package com.zhou.common;
 
 /**
  * @Author: 周益全 (https://gitee.com/zfovikqdev928)

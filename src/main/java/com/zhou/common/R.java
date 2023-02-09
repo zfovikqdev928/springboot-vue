@@ -1,4 +1,4 @@
-package com.zhou.util;
+package com.zhou.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
