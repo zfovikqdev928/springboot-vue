@@ -163,14 +163,14 @@ public class SysUserController {
         List<SysUser> list = sysUserService.list();
         // hutool 工具类创建 writer，写出到磁盘目录
         ExcelWriter writer = ExcelUtil.getWriter(true);
-//        writer.addHeaderAlias("id", "ID");
-//        writer.addHeaderAlias("username", "用户名");
-//        writer.addHeaderAlias("nickname", "昵称");
-//        writer.addHeaderAlias("password", "密码");
-//        writer.addHeaderAlias("email", "邮箱");
-//        writer.addHeaderAlias("phone", "手机号");
-//        writer.addHeaderAlias("address", "地址");
-//        writer.addHeaderAlias("createTime", "创建时间");
+        //writer.addHeaderAlias("id", "ID");
+        //writer.addHeaderAlias("username", "用户名");
+        //writer.addHeaderAlias("nickname", "昵称");
+        //writer.addHeaderAlias("password", "密码");
+        //writer.addHeaderAlias("email", "邮箱");
+        //writer.addHeaderAlias("phone", "手机号");
+        //writer.addHeaderAlias("address", "地址");
+        //writer.addHeaderAlias("createTime", "创建时间");
         writer.setSheet("sheet1");
 
         // 一次性写出 list 内的对象到 excel，使用默认样式，强制输出标题
