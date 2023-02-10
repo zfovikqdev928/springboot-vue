@@ -7,7 +7,7 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhou.VueBlogApplication;
+import com.zhou.Application;
 import com.zhou.common.Constants;
 import com.zhou.common.R;
 import com.zhou.dto.SysUserDTO;
@@ -36,7 +36,7 @@ public class SysUserController {
     private SysUserServiceImpl sysUserService;
 
     public static void main(String[] args) {
-        SpringApplication.run(VueBlogApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @GetMapping

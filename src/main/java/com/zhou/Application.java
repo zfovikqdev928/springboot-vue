@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @MapperScan("com.zhou")
 @RestController
-public class VueBlogApplication {
+public class Application {
 
 
     public static void main(String[] args) {
-        SpringApplication.run(VueBlogApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 
