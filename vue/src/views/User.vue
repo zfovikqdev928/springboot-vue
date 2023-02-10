@@ -78,15 +78,16 @@
       <el-pagination
           :current-page="pageNum"
           :page-size=pageSize
-          :page-sizes="[5, 10]"
+          :page-sizes="[5, 10,15]"
           :total="total"
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange">
       </el-pagination>
     </div>
+
+    <!--   新增弹出对话框     -->
     <div>
-      <!--   新增弹出对话框     -->
       <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%">
         <el-form label-width="80px" size="small" :model="form">
           <el-form-item label="用户名">
@@ -114,6 +115,8 @@
         </div>
       </el-dialog>
     </div>
+
+
   </div>
 </template>
 
@@ -179,7 +182,8 @@ export default {
     // 新增用户时弹窗
     handleAdd() {
       this.dialogFormVisible = true
-      this.form = {}
+      this.form = {
+      }
     },
     // 编辑用户
     handleEdit(row) {

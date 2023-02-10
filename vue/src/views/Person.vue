@@ -2,7 +2,7 @@
   <el-card style="width: 500px;padding: 10px">
     <el-form label-width="80px" size="small" :model="form">
       <el-form-item label="用户名">
-        <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+        <el-input v-model="form.username" disabled placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item label="昵称">
         <el-input v-model="form.nickname" autocomplete="off" placeholder="请输入昵称"></el-input>
