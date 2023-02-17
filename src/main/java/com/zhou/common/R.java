@@ -20,11 +20,11 @@ public class R {
     private Object data;
 
     public static R success() {
-        return new R(Constants.CODE_200, "", null);
+        return new R(Constants.CODE_200, "success", null);
     }
 
     public static R success(Object data) {
-        return new R(Constants.CODE_200, "", data);
+        return new R(Constants.CODE_200, "success", data);
     }
 
     public static R error(String code, String msg) {
@@ -32,7 +32,7 @@ public class R {
     }
 
     public static R error() {
-        return new R(Constants.CODE_500, "系统错误", null);
+        return new R(Constants.CODE_500, "error", null);
     }
 
 }

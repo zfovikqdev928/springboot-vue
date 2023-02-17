@@ -1,6 +1,4 @@
 package com.zhou.exception;
-
-
 import com.zhou.common.R;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +17,6 @@ public class GlobalException {
     @ExceptionHandler(SysUserException.class)
     @ResponseBody
     public R SysUserEx(SysUserException e) {
-        System.out.println("消息" + e.getMessage());
         return R.error(e.getCode(), e.getMessage());
     }
 

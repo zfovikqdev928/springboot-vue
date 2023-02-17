@@ -1,37 +1,35 @@
-spring:
-  application:
-    name: vueBlog
-    # MYSQL 数据源
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/zhou?serverTimezone=UTC
-    username: root
-    password: root
-
-server:
-  port: 9090
-mybatis-plus:
-  mapper-locations: classpath:/mapper/**.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-
-
 knife4j:
   enable: true
   openapi:
-    title: SpringBoot+Vue 后台管理系统 API
-    description: "标准接口"
-    email: 1507998218@qq.com
     concat: 周益全
-    url: https://yuque.com/zfovikqdev928
-    version: v1.0
-    license:
-    license-url: https://stackoverflow.com/
-    terms-of-service-url: https://stackoverflow.com/
+    description: 标准接口
+    email: 1507998218@qq.com
     group:
       test1:
-        group-name: test
         api-rule: package
-        api-rule-resources:
-          - com.zhou.controller
+        api-rule-resources: '[com.zhou.controller]'
+        group-name: test
+    license: 'null'
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    title: SpringBoot+Vue 后台管理系统 API
+    url: https://yuque.com/zfovikqdev928
+    version: v1.0
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:/mapper/**.xml
+
+
+server:
+  port: 9090
+spring:
+  application:
+    name: vueBlog
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/zhou?serverTimezone=UTC
+    username: root

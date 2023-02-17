@@ -2,12 +2,8 @@
   <div>
     <!--   搜索   -->
     <div style="padding: 10px 0">
-      <el-input v-model="username" placeholder="请输入用户名" style="width: 200px"
+      <el-input v-model="name" placeholder="请输入角色名称" style="width: 200px"
                 suffix-icon="el-icon-search"></el-input>
-      <el-input v-model="email" class="ml-5" placeholder="请输入邮箱"
-                style="width: 200px" suffix-icon="el-icon-message"></el-input>
-      <el-input v-model="address" class="ml-5" placeholder="请输入地址"
-                style="width: 200px" suffix-icon="el-icon-position"></el-input>
       <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
@@ -27,37 +23,28 @@
         <el-button class="ml-5" type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i>
         </el-button>
       </el-popconfirm>
-
-      <el-upload action="http://localhost:9090/user/import"
-                 :show-file-list="false"
-                 accept="xlsx,xls"
-                 :on-success="handleIExcelImportSuccess"
-                 :on-error="handleIExcelImportError"
-                 style="display: inline-block">
-        <el-button class="ml-5" type="primary">导入<i class="el-icon-bottom"></i></el-button>
-      </el-upload>
-      <el-button class="ml-5" type="primary" @click="exp">导出<i class="el-icon-top"></i></el-button>
     </div>
 
 
-    <el-table :data="tableData"
-              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+    <el-table :data="tableData" :header-cell-style="{background:'#eef1f6',color:'#606266'}"
               border stripe:true
+              row-key="id"
+              default-expand-all="true"
               @selection-change="handleSelectionChange">
       <!--     多选框     -->
       <el-table-column align="center"
                        type="selection"
                        width="55">
       </el-table-column>
-      <el-table-column align="center" label="ID" prop="id" sortable width="90"></el-table-column>
-      <el-table-column align="center" label="用户名" prop="username" sortable width="140"></el-table-column>
-      <el-table-column align="center" label="昵称" prop="nickname" width="140"></el-table-column>
-      <el-table-column align="center" label="邮箱" prop="email" width="180"></el-table-column>
-      <el-table-column align="center" label="手机号" prop="phone" sortable width="140"></el-table-column>
-      <el-table-column align="center" label="地址" prop="address"></el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" label="ID" prop="id" sortable width="80"></el-table-column>
+      <el-table-column align="center" label="名称" prop="name" sortable></el-table-column>
+      <el-table-column align="center" label="路径" prop="path"></el-table-column>
+      <el-table-column align="center" label="图标" prop="icon"></el-table-column>
+      <el-table-column align="center" label="描述" prop="description"></el-table-column>
+      <el-table-column align="center" label="操作" width="280">
 
         <template slot-scope="scope">
+          <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="scope.row.pid & !scope.row.path">新增子菜单<i class="el-icon-plus"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑<i class="el-icon-edit"></i></el-button>
           <!-- 删除提示框-->
           <el-popconfirm class="ml-5"
@@ -74,39 +61,22 @@
       </el-table-column>
     </el-table>
 
-    <div style="padding: 10px 0">
-      <el-pagination
-          :current-page="pageNum"
-          :page-size=pageSize
-          :page-sizes="[5, 10,15]"
-          :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange">
-      </el-pagination>
-    </div>
 
     <!--   新增弹出对话框     -->
     <div>
-      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%">
+      <el-dialog title="菜单信息" :visible.sync="dialogFormVisible" width="30%">
         <el-form label-width="80px" size="small" :model="form">
-          <el-form-item label="用户名">
-            <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+          <el-form-item label="名称">
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="form.nickname" autocomplete="off" placeholder="请输入昵称"></el-input>
+          <el-form-item label="路径">
+            <el-input v-model="form.path" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="密码">
-            <el-input type="text" v-model="form.password" autocomplete="off" placeholder="请输入密码"></el-input>
+          <el-form-item label="图标">
+            <el-input v-model="form.icon" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input v-model="form.email" autocomplete="off" placeholder="请输入邮箱"></el-input>
-          </el-form-item>
-          <el-form-item label="手机号">
-            <el-input v-model="form.phone" autocomplete="off" placeholder="请输入手机号"></el-input>
-          </el-form-item>
-          <el-form-item label="地址">
-            <el-input v-model="form.address" autocomplete="off" placeholder="请输入地址"></el-input>
+          <el-form-item label="描述">
+            <el-input v-model="form.description" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -122,17 +92,14 @@
 
 <script>
 export default {
-  name: "User",
+  name: "Menu",
   data() {
     return {
       tableData: [],
       total: 0,
       pageNum: 1,
       pageSize: 10,
-      username: "",
-      email: "",
-      address: "",
-      nickname: "",
+      name: "",
       form: {},
       multipleSelection: [],
       dialogFormVisible: false
@@ -148,19 +115,14 @@ export default {
     // 分页查询
     load: function () {
       // axios 请求分页查询
-      this.request.get("/user/page", {
+      this.request.get("/menu", {
         params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          username: this.username,
-          email: this.email,
-          address: this.address
+          name: this.name
         }
       })
           .then(res => {
             // 解析res的数据
-            this.tableData = res.data.records
-            this.total = res.data.total
+            this.tableData = res.data
           })
     },
     handleSizeChange(pageSize) {
@@ -174,15 +136,16 @@ export default {
     },
     // 重置按钮方法
     reset() {
-      this.username = "",
-          this.email = "",
-          this.address = "",
-          this.load()
+      this.name = ""
+      this.load()
     },
     // 新增用户时弹窗
-    handleAdd() {
+    handleAdd(pid) {
       this.dialogFormVisible = true
       this.form = {}
+      if (id){
+        this.form.pid = pid
+      }
     },
     // 编辑用户
     handleEdit(row) {
@@ -191,7 +154,7 @@ export default {
     },
     // 删除用户
     handleDel(id) {
-      this.request.delete("/user/del/" + id).then(res => {
+      this.request.delete("/menu/del/" + id).then(res => {
         if (res.code === '200') {
           this.$message.success("删除成功")
           this.load()
@@ -204,7 +167,7 @@ export default {
     // 批量删除用户
     delBatch() {
       let ids = this.multipleSelection.map(v => v.id); // [{},{}] => [1,2,3...]
-      this.request.post("/user/del/batch", ids).then(res => {
+      this.request.post("/menu/del/batch", ids).then(res => {
         if (res.code === '200') {
           this.$message.success("批量删除成功")
           this.load()
@@ -216,7 +179,7 @@ export default {
     },
     // 弹窗新增用户信息
     save() {
-      this.request.post("/user/save", this.form).then(res => {
+      this.request.post("/menu/save", this.form).then(res => {
         if (res.code === '200') {
           this.$message.success("保存成功")
           this.dialogFormVisible = false  //关闭弹窗
@@ -234,7 +197,7 @@ export default {
 
     // 导出
     exp() {
-      window.open("http://localhost:9090/user/export")
+      window.open("http://localhost:9090/menu/export")
     },
 
     // 导入成功

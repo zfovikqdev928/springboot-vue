@@ -39,6 +39,10 @@ public class SysUserController {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * 查询所有
+     * @return
+     */
     @GetMapping
     public R findAll() {
         return R.success(sysUserService.list());

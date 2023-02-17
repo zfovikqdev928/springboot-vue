@@ -8,8 +8,6 @@
         <div id="pie" style="width: 500px;height: 400px"></div>
       </el-col>
     </el-row>
-
-
   </div>
 
 </template>

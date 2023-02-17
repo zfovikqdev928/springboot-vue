@@ -2,12 +2,8 @@
   <div>
     <!--   搜索   -->
     <div style="padding: 10px 0">
-      <el-input v-model="username" placeholder="请输入用户名" style="width: 200px"
+      <el-input v-model="name" placeholder="请输入角色名称" style="width: 200px"
                 suffix-icon="el-icon-search"></el-input>
-      <el-input v-model="email" class="ml-5" placeholder="请输入邮箱"
-                style="width: 200px" suffix-icon="el-icon-message"></el-input>
-      <el-input v-model="address" class="ml-5" placeholder="请输入地址"
-                style="width: 200px" suffix-icon="el-icon-position"></el-input>
       <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
@@ -17,26 +13,15 @@
       <el-button class="ml-5" type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i>
       </el-button>
       <!--批量删除提示框-->
-      <el-popconfirm class="ml-5"
+      <el-popconfirm cancel-button-text='取消'
+                     class="ml-5"
                      confirm-button-text='确定'
-                     cancel-button-text='取消'
                      icon="el-icon-info"
                      icon-color="red"
                      title="您确定批量删除这些数据吗?"
                      @confirm="delBatch">
-        <el-button class="ml-5" type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i>
-        </el-button>
+        <el-button slot="reference" class="ml-5" type="danger">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
-
-      <el-upload action="http://localhost:9090/user/import"
-                 :show-file-list="false"
-                 accept="xlsx,xls"
-                 :on-success="handleIExcelImportSuccess"
-                 :on-error="handleIExcelImportError"
-                 style="display: inline-block">
-        <el-button class="ml-5" type="primary">导入<i class="el-icon-bottom"></i></el-button>
-      </el-upload>
-      <el-button class="ml-5" type="primary" @click="exp">导出<i class="el-icon-top"></i></el-button>
     </div>
 
 
@@ -49,26 +34,25 @@
                        type="selection"
                        width="55">
       </el-table-column>
-      <el-table-column align="center" label="ID" prop="id" sortable width="90"></el-table-column>
-      <el-table-column align="center" label="用户名" prop="username" sortable width="140"></el-table-column>
-      <el-table-column align="center" label="昵称" prop="nickname" width="140"></el-table-column>
-      <el-table-column align="center" label="邮箱" prop="email" width="180"></el-table-column>
-      <el-table-column align="center" label="手机号" prop="phone" sortable width="140"></el-table-column>
-      <el-table-column align="center" label="地址" prop="address"></el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" label="ID" prop="id" sortable width="80"></el-table-column>
+      <el-table-column align="center" label="角色名称" prop="name" sortable></el-table-column>
+      <el-table-column align="center" label="描述" prop="description"></el-table-column>
+      <el-table-column align="center" label="操作" width="280">
 
         <template slot-scope="scope">
+          <el-button slot="reference" type="info" @click="selectMenu(scope.row.id)">分配菜单<i class="el-icon-menu"></i>
+          </el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑<i class="el-icon-edit"></i></el-button>
           <!-- 删除提示框-->
-          <el-popconfirm class="ml-5"
+          <el-popconfirm cancel-button-text='取消'
+                         class="ml-5"
                          confirm-button-text='确定'
-                         cancel-button-text='取消'
                          icon="el-icon-info"
                          icon-color="red"
                          title="您确定删除吗?"
                          @confirm="handleDel(scope.row.id)"
           >
-            <el-button type="danger" slot="reference">删除<i class="el-icon-delete"></i></el-button>
+            <el-button slot="reference" type="danger">删除<i class="el-icon-delete"></i></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -86,31 +70,36 @@
       </el-pagination>
     </div>
 
-    <!--   新增弹出对话框     -->
+    <!--   弹出对话框     -->
     <div>
-      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%">
-        <el-form label-width="80px" size="small" :model="form">
-          <el-form-item label="用户名">
-            <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+      <!--   新增弹框    -->
+      <el-dialog :visible.sync="dialogFormVisible" title="角色信息" width="30%">
+        <el-form :model="form" label-width="80px" size="small">
+          <el-form-item label="角色名称">
+            <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
           </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="form.nickname" autocomplete="off" placeholder="请输入昵称"></el-input>
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input type="text" v-model="form.password" autocomplete="off" placeholder="请输入密码"></el-input>
-          </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input v-model="form.email" autocomplete="off" placeholder="请输入邮箱"></el-input>
-          </el-form-item>
-          <el-form-item label="手机号">
-            <el-input v-model="form.phone" autocomplete="off" placeholder="请输入手机号"></el-input>
-          </el-form-item>
-          <el-form-item label="地址">
-            <el-input v-model="form.address" autocomplete="off" placeholder="请输入地址"></el-input>
+          <el-form-item label="描述">
+            <el-input v-model="form.description" autocomplete="off" placeholder="角色描述"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="save">确 定</el-button>
+        </div>
+      </el-dialog>
+
+      <!--   分配菜单弹框  -->
+      <el-dialog title="菜单分配" :visible.sync="menuDialogVis" width="30%">
+        <el-tree
+            :data="menuData"
+            show-checkbox
+            node-key="id"
+            :default-expanded-keys="[1]"
+            :default-checked-keys="[4]"
+            @check-change="handleCheckChange">
+        </el-tree>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="menuDialogVis = false">取 消</el-button>
           <el-button type="primary" @click="save">确 定</el-button>
         </div>
       </el-dialog>
@@ -122,20 +111,50 @@
 
 <script>
 export default {
-  name: "User",
+  name: "Role",
   data() {
     return {
       tableData: [],
       total: 0,
       pageNum: 1,
       pageSize: 10,
-      username: "",
-      email: "",
-      address: "",
-      nickname: "",
+      name: "",
       form: {},
       multipleSelection: [],
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      menuDialogVis: false,
+
+      // 分配角色
+      menuData: [{
+        id: 1,
+        label: '主页',
+        children: []
+      }
+        , {
+          id: 2,
+          label: '系统管理',
+          children: [{
+            id: 3,
+            label: '用户管理',
+            children: []
+          },
+            {
+              id: 4,
+              label: '角色管理',
+              children: []
+            },
+            {
+              id: 5,
+              label: '菜单管理',
+              children: []
+            },
+            {
+              id: 6,
+              label: '文件管理',
+              children: []
+            }]
+        },
+      ]
     }
   },
 
@@ -148,13 +167,11 @@ export default {
     // 分页查询
     load: function () {
       // axios 请求分页查询
-      this.request.get("/user/page", {
+      this.request.get("/role/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          username: this.username,
-          email: this.email,
-          address: this.address
+          name: this.name
         }
       })
           .then(res => {
@@ -174,10 +191,8 @@ export default {
     },
     // 重置按钮方法
     reset() {
-      this.username = "",
-          this.email = "",
-          this.address = "",
-          this.load()
+      this.name = ""
+      this.load()
     },
     // 新增用户时弹窗
     handleAdd() {
@@ -191,7 +206,7 @@ export default {
     },
     // 删除用户
     handleDel(id) {
-      this.request.delete("/user/del/" + id).then(res => {
+      this.request.delete("/role/del/" + id).then(res => {
         if (res.code === '200') {
           this.$message.success("删除成功")
           this.load()
@@ -204,7 +219,7 @@ export default {
     // 批量删除用户
     delBatch() {
       let ids = this.multipleSelection.map(v => v.id); // [{},{}] => [1,2,3...]
-      this.request.post("/user/del/batch", ids).then(res => {
+      this.request.post("/role/del/batch", ids).then(res => {
         if (res.code === '200') {
           this.$message.success("批量删除成功")
           this.load()
@@ -216,7 +231,7 @@ export default {
     },
     // 弹窗新增用户信息
     save() {
-      this.request.post("/user/save", this.form).then(res => {
+      this.request.post("/role/save", this.form).then(res => {
         if (res.code === '200') {
           this.$message.success("保存成功")
           this.dialogFormVisible = false  //关闭弹窗
@@ -232,21 +247,15 @@ export default {
       this.multipleSelection = data
     },
 
-    // 导出
-    exp() {
-      window.open("http://localhost:9090/user/export")
+    // 分配角色
+    selectMenu(roleId) {
+      this.menuDialogVis = true
+
     },
 
-    // 导入成功
-    handleIExcelImportSuccess() {
-      this.$message.success("导入成功！")
-      this.load()
+    handleCheckChange(data, checked, indeterminate) {
+      console.log(data, checked, indeterminate);
     },
-    //导入失败
-    handleIExcelImportError() {
-      this.$message.error("导入失败，只支持 .xlsx 或者 .xls 格式的文件！")
-      this.load()
-    }
   }
 }
 </script>

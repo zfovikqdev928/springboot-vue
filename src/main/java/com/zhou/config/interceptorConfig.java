@@ -28,7 +28,7 @@ public class interceptorConfig implements WebMvcConfigurer {
                 // 拦截规则
                 .addPathPatterns("/**")
                 // 放行规则
-                .excludePathPatterns("/user/login", "/user/register", "/**/export", "/**/import");
+                .excludePathPatterns("/user/login", "/user/register", "/**/export", "/**/import","/doc.html");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 }
