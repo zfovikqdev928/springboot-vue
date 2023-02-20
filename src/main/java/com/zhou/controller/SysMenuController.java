@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * 前端控制器
- * </p>
- *
  * @author 周益全
  * @since 2023-02-16
  */

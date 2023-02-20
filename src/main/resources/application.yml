@@ -33,3 +33,10 @@ spring:
     password: root
     url: jdbc:mysql://localhost:3306/zhou?serverTimezone=UTC
     username: root
+
+
+
+# 文件上传地址
+files:
+  upload:
+    path: D:\Work_space\IDEA_Projects\springboot_vue\file\
