@@ -42,7 +42,7 @@
 
     <el-table :data="tableData"
               :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-              border stripe:true
+              stripe:true
               @selection-change="handleSelectionChange">
       <!--     多选框     -->
       <el-table-column align="center"
