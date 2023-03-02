@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhou.common.R;
 import com.zhou.entity.SysMenu;
 import com.zhou.service.impl.SysMenuServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * @author 周益全
  * @since 2023-02-16
  */
+@Slf4j
 @RestController
 @RequestMapping("/menu")
 public class SysMenuController {
@@ -68,10 +70,13 @@ public class SysMenuController {
         QueryWrapper<SysMenu> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name", name);
         queryWrapper.orderByDesc("id");
-        // 查询所有
+
         List<SysMenu> list = menuService.list(queryWrapper);
+        log.info("All：", list);
+
         //找出 pid 为 null 的一级菜单
         List<SysMenu> parentNode = list.stream().filter(SysMenu -> SysMenu.getPid() == null).collect(Collectors.toList());
+        log.info("parentNode：",parentNode);
 
         // 找出一级菜单的子菜单
         for (SysMenu menu : parentNode) {
